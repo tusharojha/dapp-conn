@@ -1,4 +1,5 @@
-import type { NextComponentType, NextPage } from 'next'
+import type { NextPage } from 'next'
+import Image from "next/image"
 import { BsFillSquareFill } from "react-icons/bs";
 
 interface Props {
@@ -29,8 +30,8 @@ const Row: NextPage<Props> = ({ chain }) => {
   return (
     <>
       <td data-column="Name" className="name-td">
-        <img className="icon" src={'https://sub.id/images/' + chain['icon']} alt={chain['name']} width="20" height="20" />
-        <span className="company-name">{chain['name']}</span>{" "}
+        <Image className="icon" src={'https://sub.id/images/' + chain['icon']} alt={chain['name']} width="20" height="20" priority/>
+        <span className="company-name"> {chain['name']}</span>{" "}
       </td>
 
       <td data-column="Status">

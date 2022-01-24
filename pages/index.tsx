@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useState, useEffect } from 'react'
 import styles from '../styles/Home.module.css'
 
-import Row from "./Row"
+import Row from "../components/Row"
 
 type Props = {
   listOfChains: ChainDetails[],
