@@ -2,19 +2,17 @@ import type { NextPage } from 'next'
 import Image from "next/image"
 import { BsFillSquareFill } from "react-icons/bs";
 
+import { ChainDetails } from "../pages/index"
+
 interface Props {
   chain: ChainDetails,
 }
 
-interface ChainDetails {
-  status?: boolean,
-  name: string,
-  icon: string,
-  tokenSymbol: string[],
-  tokenDecimals: number[],
-}
-
+// Component to render the row of the table.
+// Shows the name, status, token symbol and token decimal with availability.
 const Row: NextPage<Props> = ({ chain }) => {
+
+  // Converting arrays to string for the method. 
   var symbols = ''
   chain.tokenSymbol.forEach((i) => {
     symbols += i + ' | '
@@ -27,10 +25,11 @@ const Row: NextPage<Props> = ({ chain }) => {
     decimals += i + ' | '
   })
   decimals = decimals.substring(0, decimals.length - 2);
+
   return (
     <>
       <td data-column="Name" className="name-td">
-        <Image className="icon" src={'https://sub.id/images/' + chain['icon']} alt={chain['name']} width="20" height="20" priority/>
+        <Image className="icon" src={'https://sub.id/images/' + chain['icon']} alt={chain['name']} width="20" height="20" priority />
         <span className="company-name"> {chain['name']}</span>{" "}
       </td>
 

@@ -4,12 +4,14 @@ import styles from '../styles/Home.module.css'
 
 import Row from "../components/Row"
 
+// Props type for the Home Page.
 type Props = {
   listOfChains: ChainDetails[],
   listOfAvailableChains: ChainDetails[],
 }
 
-interface ChainDetails {
+// Interface for the Chain Details.
+export interface ChainDetails {
   status?: boolean,
   name: string,
   icon: string,
@@ -17,8 +19,13 @@ interface ChainDetails {
   tokenDecimals: number[],
 }
 
+// Home Page Component.
 const Home: NextPage<Props> = ({ listOfAvailableChains }) => {
+  
+  // State for the list of chains (having tokenDecimals & tokenSymbols).
   const [chains, setChains] = useState(listOfAvailableChains || [])
+  
+  // Checking for availability in every 5 minutes.
   useEffect(() => {
     setTimeout(async () => {
       const { props } = await fetchData()
@@ -60,6 +67,7 @@ const Home: NextPage<Props> = ({ listOfAvailableChains }) => {
   )
 }
 
+// Fetch Data from the API about chains.
 const fetchData = async () => {
   // Fetching data from sub.id api.
   const res = await fetch(`https://app.subsocial.network/subid/api/v1/chains/properties`)
@@ -67,8 +75,11 @@ const fetchData = async () => {
 
   let listOfAvailableChains: ChainDetails[] = []
 
+  // Filtering the list of chains having tokenDecimals & tokenSymbols.
   for (const [key, value] of Object.entries<ChainDetails>(listOfChains)) {
     if (value.tokenSymbol !== undefined && value.tokenDecimals !== undefined) {
+      
+      // Feteching the chain using the name to check availability status.
       await fetch(`https://app.subsocial.network/subid/api/v1/check/${key}`).then(response => response.json()).then(data => {
         let chain = value
         chain.status = data
@@ -78,10 +89,14 @@ const fetchData = async () => {
       })
     }
   }
-  // Pass listOfChains to the page via props
+
+  // Pass listOfAvailableChains to the page via props
+  // Setting the revaildate time to 5 mins for fast response.
   return { props: { listOfAvailableChains }, revalidate: 5 * 60 }
 }
 
+// getStatic Props to fetch data from the API.
+// during the build time.
 export async function getStaticProps() {
   return fetchData()
 }
